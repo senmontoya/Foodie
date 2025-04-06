@@ -1,0 +1,120 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container-fluid {
+            padding: 0;
+        }
+
+        .row {
+            margin: 0;
+            height: 100vh;
+        }
+
+        .login-section {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .image-section {
+            padding: 0;
+            background-image: url("https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1599&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .logo {
+            width: 60px;
+            margin-bottom: 40px;
+        }
+
+        h1, h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .foodie-text {
+            color: #e21b1b;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #c01b1b;
+            border-color: #c01b1b;
+        }
+
+            .btn-primary:hover {
+                background-color: #a51616;
+                border-color: #a51616;
+            }
+
+        @@media (max-width: 768px) {
+            .row {
+                flex-direction: column-reverse;
+                height: auto;
+            }
+
+            .login-section {
+                min-height: 60vh;
+            }
+
+            .image-section {
+                height: 40vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5 login-section">
+                <img src="~/img/logo.png" alt="Foodie Logo" class="logo" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg width=\'60\' height=\'30\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect width=\'60\' height=\'30\' fill=\'%23e21b1b\'/%3E%3Ctext x=\'30\' y=\'15\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\' font-family=\'Arial\' fill=\'white\'%3EFoodie%3C/text%3E%3C/svg%3E';">
+
+                <h1>Bienvenido a <span class="foodie-text">Foodie</span></h1>
+
+                <form method="post">
+                    <div class="form-group">
+                        <label for="Email">Email:</label>
+                        @Html.TextBox("correo", "", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <label for="Password">Password:</label>
+                        @Html.Password("password", "", new { @class = "form-control" })
+                    </div>
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </form>
+
+                @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
+                {
+                    <div class="alert alert-danger mt-3">
+                        @ViewData["ErrorMessage"]
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-7 image-section"></div>
+        </div>
+    </div>
+</body>
+</html>
