@@ -17,7 +17,7 @@ builder.Services.AddSession(options =>
 
 
 builder.Services.AddDbContext<FoodieContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("connectionDb")
+    options.UseSqlServer(builder.Configuration.GetConnectionString("damian")
     )
 );
 
@@ -44,6 +44,6 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login_Clientes}/{action=Autenticar}/{id?}");
+    pattern: "{controller=Welcome}/{action=Welcome}/{id?}");
 
 app.Run();
