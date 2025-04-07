@@ -17,7 +17,7 @@ builder.Services.AddSession(options =>
 
 
 builder.Services.AddDbContext<FoodieContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("damian")
+    options.UseSqlServer(builder.Configuration.GetConnectionString("connectionDb")
     )
 );
 
