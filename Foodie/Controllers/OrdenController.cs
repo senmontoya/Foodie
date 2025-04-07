@@ -1,4 +1,6 @@
-﻿using Foodie.Models;
+﻿using Foodie.Helpers;
+using Foodie.Models;
+using Foodie.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Foodie.Models;
@@ -92,15 +94,107 @@ namespace ProyectoVentas.Controllers
             return View(model);
         }
 
+        public IActionResult AgregarAlPedido(int productoId)
+        {
+            var producto = _context.Plato.FirstOrDefault(p => p.id == productoId);
+
+            if (producto == null)
+            {
+                producto = _context.Combo.FirstOrDefault(p => p.id == productoId);
+
+                if(producto == null)
+                {
+                    return RedirectToAction("Welcome", "Welcome");
+                }
+            }
+
+            var carrito = HttpContext.Session.GetObjectFromJson<List<ItemPedido>>("Carrito") ?? new List<ItemPedido>();
+
+            var item = carrito.FirstOrDefault(i => i.ProductoId == producto.id);
+
+            if (item != null)
+            {
+                item.Cantidad++;
+            }
+            else
+            {
+                carrito.Add(new ItemPedido
+                {
+                    ProductoId = producto.id,
+                    Nombre = producto.Nombre,
+                    Descripcion = producto.Descripcion,
+                    Precio = producto.Precio,
+                    Cantidad = 1
+                });
+            }
+
+            HttpContext.Session.SetObjectAsJson("Carrito", carrito);
+
+            return RedirectToAction("Welcome", "Welcome");
+        }
+
+        public IActionResult LimpiarPedido()
+        {
+            HttpContext.Session.Remove("Carrito");
+            return RedirectToAction("VerCarrito");
+        }
+
+        [HttpGet]
         public IActionResult ConfirmarPedido()
         {
-            return View();
+
+            var carrito = HttpContext.Session.GetObjectFromJson<List<ItemPedido>>("Carrito") ?? new List<ItemPedido>();
+
+            decimal subTotal = carrito.Sum(item => item.Precio * item.Cantidad);
+            decimal iva = subTotal * 0.13m; 
+            decimal total = subTotal + iva;
+
+            var loginid = HttpContext.Session.GetInt32("loginid");
+
+            if (loginid == null)
+            {
+                return RedirectToAction("Autenticar", "Login_Clientes");
+            }
+
+            var cliente = _context.Cliente.FirstOrDefault(c => c.login_Cliente.loginid == loginid);
+
+            if (cliente == null)
+            {
+                return RedirectToAction("Autenticar", "Login_Clientes");
+            }
+
+            var loginCliente = _context.Login_CLiente.FirstOrDefault(lc => lc.loginid == loginid);
+
+            var viewModel = new ConfirmarPedidoViewModel
+            {
+                Items = carrito,
+                SubTotal = subTotal,
+                IVA = iva,
+                Total = total,
+                NombreCliente = cliente?.nombre,
+                Telefono = cliente?.telefono,
+                Correo = loginCliente?.correo,
+                Direccion = cliente?.direccion
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult ConfirmarPedido(int id)
+        public IActionResult ConfirmarPedidoPost()
         {
-            return View();
+            var carrito = HttpContext.Session.GetObjectFromJson<List<ItemPedido>>("Carrito");
+            if (carrito == null || !carrito.Any())
+            {
+
+                return RedirectToAction("Welcome", "Welcome");
+            }
+
+            // Aquí guardas el pedido y los detalles en la base de datos (puedo ayudarte con eso si quieres)
+
+            HttpContext.Session.Remove("Carrito");
+
+            return RedirectToAction("Welcome", "Welcome");
         }
     }
 }
