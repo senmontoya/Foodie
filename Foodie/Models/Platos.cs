@@ -11,9 +11,13 @@ namespace Foodie.Models
         public string? descripcion { get; set; }
         public decimal? precio { get; set; }
         public string? imagen { get; set; }
+
+        public int? categoria_id { get; set; }
+
         [ForeignKey("categoria_id")]
         public Categoria categoria { get; set; }
         public int? estado { get; set; }
 
+        public ICollection<menu_plato> MenuPlatos { get; set; }
     }
 }

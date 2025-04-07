@@ -79,23 +79,6 @@ namespace ProyectoVentas.Controllers
             return Json(platos);
         }
 
-
-        //public IActionResult ObtenerPlatos()
-        //{
-        //    var platos = _context.platos
-        //        .Where(p => p.estado == 1) // Activos
-        //        .Select(p => new platos
-        //        {
-        //            nombre = p.nombre,
-        //            descripcion = p.descripcion,
-        //            precio = p.precio,
-        //            imagen = p.imagen /*?? "~/img/placeholder.png"*/
-        //        })
-        //        .ToList();
-
-        //    return Json(platos);
-        //}
-
         public IActionResult ObtenerPromociones()
         {
             DateTime hoy = DateTime.Today;
@@ -133,7 +116,7 @@ namespace ProyectoVentas.Controllers
         {
             int idCategoriaPostres = 4; // Cambia este valor si tu categoría "Postres" tiene otro ID
 
-            var postres = _context.platos
+            var postres = _context.Platos
                 .Where(p => p.estado == 1 && p.categoria_id == idCategoriaPostres)
                 .Select(p => new
                 {
@@ -152,7 +135,7 @@ namespace ProyectoVentas.Controllers
         {
             int idCategoriaBebidas = 5;
 
-            var bebidas = _context.platos
+            var bebidas = _context.Platos
                 .Where(p => p.estado == 1 && p.categoria_id == idCategoriaBebidas)
                 .Select(p => new
                 {

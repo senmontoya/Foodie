@@ -1,0 +1,378 @@
+﻿@model List<Foodie.Models.Platos>
+
+@{
+    ViewData["Title"] = "Menu";
+}
+<style>
+    body {
+        background-color: #f8f8f8;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Contenedor principal */
+    .menu-container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Encabezado con flecha integrada en el título */
+    .header-container {
+        background: white;
+        padding: 15px 20px;
+        position: relative;
+        border-bottom: 2px solid #e3002a;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .title-wrapper {
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        max-width: 80%;
+    }
+
+    .back-button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        position: absolute;
+        left: -25px; /* Posición exacta pegada al título */
+    }
+
+    .back-arrow {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        border-left: 3px solid #e3002a;
+        border-bottom: 3px solid #e3002a;
+        transform: rotate(45deg);
+    }
+
+    .title-content {
+        display: inline-block;
+    }
+
+    .main-title {
+        color: #e3002a;
+        font-size: 26px;
+        font-weight: bold;
+        margin: 0;
+        display: inline;
+    }
+
+    .subtitle {
+        color: #333;
+        font-size: 18px;
+        margin: 5px 0 0;
+        font-weight: bold;
+    }
+
+    .logo {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 30px;
+    }
+
+    /* Sección de filtros */
+    .filters-container {
+        background: white;
+        padding: 25px 20px;
+        margin: 20px 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .filters-title {
+        color: #e3002a;
+        font-size: 22px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .filters-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .filter-item {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .filter-item:hover, .filter-item.active {
+            background: #e3002a;
+            color: white;
+            border-color: #e3002a;
+        }
+
+    /* Sección de productos */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        padding: 20px;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .product-image {
+        height: 180px;
+        background-color: #eee;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .product-info {
+        padding: 18px;
+    }
+
+    .product-name {
+        color: #333;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .product-description {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+        line-height: 1.5;
+        text-align: center;
+    }
+
+    .product-options {
+        color: #e3002a;
+        font-size: 14px;
+        font-style: italic;
+        text-align: center;
+    }
+
+    .promo-header {
+        background-color: #fff3f3;
+        border-left: 5px solid #e3002a;
+        padding: 16px;
+        margin: 20px 0 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+        .promo-header .descuento {
+            color: #e3002a;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+
+    .add-to-cart-btn {
+        background-color: #ff6600;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 15px;
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        width: 100%;
+    }
+
+        .add-to-cart-btn:hover {
+            background-color: #e65c00;
+            transform: scale(1.03);
+        }
+
+        .add-to-cart-btn:active {
+            transform: scale(0.98);
+        }
+
+
+    .promo-header {
+        background-color: #fff5f5;
+        border-left: 4px solid crimson;
+        padding: 1rem;
+        border-radius: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card {
+        background-color: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: transform 0.2s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .add-to-cart-btn {
+        background-color: crimson;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 0.5rem;
+    }
+
+        .add-to-cart-btn:hover {
+            background-color: #c1002b;
+        }
+
+</style>
+
+
+
+<div class="menu-container">
+    <!-- Encabezado con flecha integrada en el título -->
+    <div class="header-container">
+        <div class="title-wrapper">
+            <button class="back-button" onclick="history.back()">
+                <span class="back-arrow"></span>
+            </button>
+            <div class="title-content">
+                <h1 class="main-title">Menu</h1>
+                <p class="subtitle">Dulce Sabor</p>
+            </div>
+        </div>
+        <img src="~/img/logo.png" alt="Logo" class="logo">
+    </div>
+
+    <!-- Sección de filtros -->
+    <div class="filters-container">
+        <h2 class="filters-title">Otras opciones</h2>
+        <div class="filters-grid">
+            <div class="filter-item active" data-filtro="platos">Platos</div>
+            <div class="filter-item" data-filtro="combos">Combos</div>
+            <div class="filter-item" data-filtro="promociones">Promociones</div>
+            <div class="filter-item" data-filtro="postres">Postres</div>
+            <div class="filter-item" data-filtro="restaurante">Solo disponible en restaurante</div>
+            <div class="filter-item" data-filtro="bebidas">Bebidas</div>
+        </div>
+    </div>
+
+    <div id="contenedor-productos" class="products-grid">
+        <!-- Aquí se llenan los productos con JS -->
+    </div>
+
+
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const filtros = document.querySelectorAll('.filter-item');
+        const contenedor = document.getElementById('contenedor-productos');
+
+        function cargarProductos(tipo) {
+            fetch(`/Menu/Obtener${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`)
+                .then(res => res.json())
+                .then(data => {
+                    contenedor.innerHTML = ''; // Limpiar anteriores
+
+                    if (tipo === 'promociones') {
+                        data.forEach(promo => {
+                            const promoHeader = `
+                                            <div class="promo-header">
+                                                <h2 class="product-name">${promo.nombre} - <span class="descuento">${promo.descuento}% OFF</span></h2>
+                                                <p class="product-description">${promo.descripcion}</p>
+                                            </div>`;
+                            contenedor.innerHTML += promoHeader;
+
+                            promo.combos.forEach(combo => {
+                                const card = `
+                                                <div class="product-card">
+                                                        <div class="product-image" style="background-image: url('/img/promociones.png')"></div>
+                                                    <div class="product-info">
+                                                        <h3 class="product-name">${combo.nombre}</h3>
+                                                        <p class="product-description">${combo.descripcion}</p>
+                                                            <p class="product-options">$${combo.precio.toFixed(2)}</p>
+                                                         <button class="add-to-cart-btn" onclick="location.href='/Carrito/Agregar?productoId=${combo.id}'">
+                                                            🛒 Agregar al carrito
+                                                        </button>
+                                                    </div>
+                                                </div>`;
+                                contenedor.innerHTML += card;
+                            });
+                        });
+                    } else {
+                        data.forEach(p => {
+                            const card = `
+                                            <div class="product-card">
+                                                    <div class="product-image" style="background-image: url('${p.imagen || p.imagenUrl || '/img/combo.png'}')"></div>
+                                                <div class="product-info">
+                                                    <h3 class="product-name">${p.nombre}</h3>
+                                                    <p class="product-description">${p.descripcion}</p>
+                                                    <p class="product-options">$${p.precio.toFixed(2)}</p>
+                                                    <button class="add-to-cart-btn" onclick="location.href='/Carrito/Agregar?productoId=${p.id}'">
+                                                        🛒 Agregar al carrito
+                                                    </button>
+                                                </div>
+                                            </div>`;
+                            contenedor.innerHTML += card;
+                        });
+                    }
+                });
+        }
+
+        // 🔽 Obtener filtro desde la URL
+        const params = new URLSearchParams(window.location.search);
+        let tipoFiltro = params.get('filtro') || 'platos';
+
+        filtros.forEach(f => {
+            const tipo = f.getAttribute('data-filtro');
+            if (tipo === tipoFiltro) {
+                f.classList.add('active');
+            }
+
+            f.addEventListener('click', () => {
+                filtros.forEach(el => el.classList.remove('active'));
+                f.classList.add('active');
+                const tipoSeleccionado = f.getAttribute('data-filtro');
+                cargarProductos(tipoSeleccionado);
+            });
+        });
+
+        // ✅ Agregamos postres y bebidas al filtro inicial
+        if (['platos', 'combos', 'promociones', 'postres', 'bebidas'].includes(tipoFiltro)) {
+            cargarProductos(tipoFiltro);
+        } else {
+            contenedor.innerHTML = '<p class="text-center">En construcción...</p>';
+        }
+    });
+</script>
+
+
+
+
