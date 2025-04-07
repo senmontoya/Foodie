@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Foodie.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoVentas.Models;
+using Foodie.Models;
 
 namespace ProyectoVentas.Controllers
 {
@@ -11,9 +12,9 @@ namespace ProyectoVentas.Controllers
             return View();
         }
 
-        private readonly restauranteDbContext _context;
+        private readonly FoodieContext _context;
 
-        public MenuController(restauranteDbContext context)
+        public MenuController(FoodieContext context)
         {
             _context = context;
         }
