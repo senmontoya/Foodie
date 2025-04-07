@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoVentas.Models;
-using ProyectoVentas.Models.Dtos;
+using Foodie.Models;
 
-namespace ProyectoVentas.Controllers
+namespace Foodie.Controllers
 {
     public class UsuarioController : Controller
     {
-        private readonly restauranteDbContext _context;
+        private readonly FoodieContext _context;
 
-        public UsuarioController(restauranteDbContext context)
+        public UsuarioController(FoodieContext context)
         {
             _context = context;
         }
