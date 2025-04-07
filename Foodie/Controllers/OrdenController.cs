@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Foodie.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoVentas.Models;
+using Foodie.Models;
 using System.Globalization;
 
 namespace ProyectoVentas.Controllers
 {
     public class OrdenController : Controller
     {
-        private readonly restauranteDbContext _context;
+        private readonly FoodieContext _context;
 
-        public OrdenController(restauranteDbContext restauranteDBContext)
+        public OrdenController(FoodieContext restauranteDBContext)
         {
             _context = restauranteDBContext;
         }
@@ -40,7 +41,7 @@ namespace ProyectoVentas.Controllers
                         {
                             Nombre = d.Plato != null ? d.Plato.nombre : (d.Combo != null ? d.Combo.nombre : "Desconocido"),
                             Cantidad = d.cantidad,
-                            Precio = d.Plato != null ? d.Plato.precio : (d.Combo != null ? d.Combo.precio : 0),
+                            Precio = (decimal)(d.Plato != null ? d.Plato.precio : (d.Combo != null ? d.Combo.precio : 0)),
                             Total = d.total,
                             Descripcion = d.Plato != null ? d.Plato.descripcion : (d.Combo != null ? d.Combo.descripcion : "Sin descripción"),
                             ImagenUrl = d.Plato != null ? d.Plato.imagen : "~/img/combo-icon.png"  // Imagen por defecto para combos
@@ -78,7 +79,7 @@ namespace ProyectoVentas.Controllers
                     {
                         Nombre = d.Plato != null ? d.Plato.nombre : (d.Combo != null ? d.Combo.nombre : "Desconocido"),
                         Cantidad = d.cantidad,
-                        Precio = d.Plato != null ? d.Plato.precio : (d.Combo != null ? d.Combo.precio : 0),
+                        Precio = (decimal)(d.Plato != null ? d.Plato.precio : (d.Combo != null ? d.Combo.precio : 0)),
                         Total = d.total,
                         Descripcion = d.Plato != null ? d.Plato.descripcion : (d.Combo != null ? d.Combo.descripcion : "Sin descripción"),
                         ImagenUrl = d.Plato != null ? d.Plato.imagen : "~/img/combo-icon.png"
