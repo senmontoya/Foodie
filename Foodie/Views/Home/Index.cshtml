@@ -1,7 +1,220 @@
 ﻿@{
     ViewData["Title"] = "Login Clientes";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodie - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome<strong>@ViewBag.nombre</strong></h1>
-</div>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .header h1 {
+                margin: 0;
+                font-size: 30px;
+                font-weight: 900;
+            }
+
+        .welcome-text {
+            color: #e21b1b;
+            font-size: 14px;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #e21b1b;
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: 18px;
+            margin: 10px 20px;
+            text-transform: uppercase;
+            color: #1D1D1D;
+            text-align: left;
+        }
+
+        .promo-carousel {
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0 10px 0;
+            scroll-behavior: smooth;
+        }
+
+            .promo-carousel::-webkit-scrollbar {
+                display: none;
+            }
+
+        .promo-card {
+            flex: 0 0 auto;
+            width: 180px;
+            height: 120px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .promo-card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 20px;
+            }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e21b1b;
+            margin: 30px 20px 10px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 20px;
+            padding: 0 20px 40px;
+            justify-content: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .menu-item {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            background-color: #fff;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 10px;
+        }
+
+            .menu-item img {
+                width: 100%;
+                height: 130px;
+                object-fit: cover;
+                border-radius: 20px;https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=196https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop5&auto=format&fit=crop
+            }
+
+        .menu-item-title {
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #000;
+            text-align: center;
+        }
+
+        /* Ajuste para la sección de promociones */
+        .promo-carousel img {
+            max-width: auto; /* Aumenta el valor de max-width para hacer las imágenes más anchas */
+            height: 120px; /* La altura se ajustará automáticamente para mantener la proporción */
+            border-radius: 15px;
+        }
+
+        /* Media query para pantallas más grandes */
+        @@media (min-width: 768px) {
+            .menu-grid
+
+        {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>HOLA, @ViewBag.nombre!</h1>
+            <div class="welcome-text">Bienvenido a Foodie</div>
+        </div>
+        <button class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <h2 class="section-title">Promociones</h2>
+    <div class="promo-carousel">
+        @foreach (var imagen in ViewBag.platosImagenes as List<string>)
+        {
+            <img src="@imagen" alt="Plato" />
+        }
+    </div>
+
+    <hr>
+
+    <h2 class="section-title">Menu</h2>
+    <div class="menu-grid">
+        <div class="menu-item">
+            <a href="@Url.Action("Index", "Menu", new { category = "Hamburguesas" })">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1899&auto=format&fit=crop">
+                <div class="menu-item-title">Hamburguesas</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="@Url.Action("Index", "Menu", new { category = "Pizzas" })">
+                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop">
+                <div class="menu-item-title">Pizzas</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="@Url.Action("Index", "Menu", new { category = "Pollo" })">
+                <img src="https://images.unsplash.com/photo-1569691899455-88464f3a0fdd?q=80&w=2089&auto=format&fit=crop">
+                <div class="menu-item-title">Pollo</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="@Url.Action("Index", "Menu", new { category = "HotDogs" })">
+                <img src="https://images.unsplash.com/photo-1619294541888-56a1e2d9eff4?q=80&w=1965&auto=format&fit=crop">
+                <div class="menu-item-title">Hot dogs</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="@Url.Action("Index", "Menu", new { category = "Postres" })">
+                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=2127&auto=format&fit=crop">
+                <div class="menu-item-title">Postres</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="@Url.Action("Index", "Menu", new { category = "Bebidas" })">
+                <img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?q=80&w=2070&auto=format&fit=crop">
+                <div class="menu-item-title">Bebidas</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="@Url.Action("Index", "Menu", new { category = "Combos" })">
+                <img src="https://images.unsplash.com/photo-1551782450-17144efb9c50?q=80&w=2069&auto=format&fit=crop">
+                <div class="menu-item-title">Combos</div>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="@Url.Action("Index", "Menu", new { category = "Promociones" })">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1965&auto=format&fit=crop">
+                <div class="menu-item-title">Promociones</div>
+            </a>
+        </div>
+    </div>
+
+
+</body>
+</html>
