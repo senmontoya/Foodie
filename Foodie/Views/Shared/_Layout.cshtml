@@ -5,42 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Foodie</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Foodie.styles.css" asp-append-version="true" />
+    <style>
+        .hamburger-menu {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+        }
+
+            .hamburger-menu .nav-menu {
+                display: none;
+                position: absolute;
+                top: 40px;
+                left: 0;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            .hamburger-menu input[type="checkbox"] {
+                display: none;
+            }
+
+                .hamburger-menu input[type="checkbox"]:checked ~ .nav-menu {
+                    display: block;
+                }
+
+        .hamburger-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: #ffffff;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.8); /* Para mayor contraste */
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 8px 15px;
+            color: #333;
+            text-decoration: none;
+        }
+
+            .nav-menu a:hover {
+                background-color: #f8f9fa;
+                color: #C2102B;
+            }
+
+        .content-section {
+            padding: 50px 0;
+            background-color: #f8f9fa;
+        }
+
+            .content-section h2 {
+                text-align: center;
+                margin-bottom: 40px;
+                color: #333;
+            }
+
+        .menu-item {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .menu-item img {
+                width: 100%;
+                max-width: 300px;
+                border-radius: 10px;
+            }
+
+            .menu-item h4 {
+                margin-top: 15px;
+                color: #333;
+            }
+
+            .menu-item p {
+                color: #777;
+            }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Foodie</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="hamburger-menu">
+        <label class="hamburger-icon" for="menu-toggle"><i class="fas fa-bars"></i></label>
+        <input type="checkbox" id="menu-toggle" />
+        <div class="nav-menu">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="text-dark">Inicio</a>
+            <a asp-area="" asp-controller="Login" asp-action="Index" class="text-dark">Login</a>
+            <a asp-area="" asp-controller="Home" asp-action="Menu" class="text-dark">Menú</a>
+            <a asp-area="" asp-controller="Orden" asp-action="Index" class="text-dark">Orden</a>
+            <a asp-area="" asp-controller="Home" asp-action="About" class="text-dark">Nosotros</a>
+            <a asp-area="" asp-controller="Home" asp-action="Contacto" class="text-dark">Contacto</a>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-dark">Privacidad</a>
+            <a asp-area="" asp-controller="Usuario" asp-action="Perfil" class="text-dark">Perfil</a>
+            <a asp-area="" asp-controller="Orden" asp-action="ConfirmarPedido" class="text-dark">Confirmar Pedido</a>
+            <a asp-controller="Login_Clientes" asp-action="Registrarse" class="text-dark">Registrarse</a>
+        </div>
     </div>
+
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - Foodie - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            © 2025 - Foodie - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

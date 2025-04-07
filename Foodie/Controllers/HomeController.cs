@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Foodie.Models;
 using Foodie.Servicios;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Foodie.Controllers;
 
@@ -61,6 +62,7 @@ public class HomeController : Controller
     {
         return View();
     }
+   
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
