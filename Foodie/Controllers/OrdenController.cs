@@ -106,6 +106,7 @@ namespace ProyectoVentas.Controllers
                     ProductoId = plato.id,
                     Nombre = plato.nombre,
                     Descripcion = plato.descripcion,
+                    Tipo = "Plato",
                     Precio = plato.precio,
                     Cantidad = 1
                 });
@@ -120,6 +121,7 @@ namespace ProyectoVentas.Controllers
                         ProductoId = combo.id,
                         Nombre = combo.nombre,
                         Descripcion = combo.descripcion,
+                        Tipo = "Combo",
                         Precio = combo.precio,
                         Cantidad = 1
                     });
@@ -140,7 +142,7 @@ namespace ProyectoVentas.Controllers
         public IActionResult LimpiarPedido()
         {
             HttpContext.Session.Remove("Carrito");
-            return RedirectToAction("Welcome", "Welcome");
+            return RedirectToAction("Index", "Home");
         }
 
         
@@ -191,14 +193,55 @@ namespace ProyectoVentas.Controllers
             if (carrito == null || !carrito.Any())
             {
 
-                return RedirectToAction("Welcome", "Welcome");
+                return RedirectToAction("Index", "Home");
+            }
+
+            var loginid = HttpContext.Session.GetInt32("loginid");
+
+            if (loginid == null)
+            {
+                return RedirectToAction("Autenticar", "Login_Clientes");
+            }
+
+            var cliente = _context.Cliente.FirstOrDefault(c => c.login_Cliente.loginid == loginid);
+
+            if (cliente == null)
+            {
+                return RedirectToAction("Autenticar", "Login_Clientes");
             }
 
             // Aquí guardas el pedido y los detalles en la base de datos (puedo ayudarte con eso si quieres)
+            var pedido = new Pedido_Online
+            {
+                id_cliente = cliente.clienteId,
+                fecha_pedido = DateTime.UtcNow,
+                estado = "Pendiente"
+            };
+
+            _context.pedido_Online.Add(pedido);
+            _context.SaveChanges();
+
+            foreach(var item in carrito)
+            {
+                var carritoItem = new Carrito
+                {
+                    pedido_id = pedido.id_pedido,
+                    plato_id = (item.Tipo == "Plato") ? item.ProductoId : null,
+                    combo_id = (item.Tipo == "Combo") ? item.ProductoId : null,
+                    cantidad = item.Cantidad,
+                    total = (item.Precio * item.Cantidad),
+                    metodo_pago_id = 1,
+                    estado = "Ok",
+                    fecha_venta = DateTime.UtcNow
+                };
+
+                _context.Carrito.Add(carritoItem);
+                _context.SaveChanges();
+            }
 
             HttpContext.Session.Remove("Carrito");
 
-            return RedirectToAction("Welcome", "Welcome");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
