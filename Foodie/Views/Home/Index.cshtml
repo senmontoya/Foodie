@@ -1,4 +1,4 @@
-﻿﻿@{
+﻿@{
     ViewData["Title"] = "Login Clientes";
     Layout = null;
 }
@@ -62,11 +62,6 @@
             letter-spacing: -0.5px;
         }
 
-        .welcome-text {
-            color: var(--primary);
-            font-size: 14px;
-            font-weight: 500;
-        }
 
         .menu-toggle {
             background: none;
@@ -173,6 +168,7 @@
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 20px;
             padding: 0 20px;
+            justify-content: flex-end;
         }
 
         .menu-item {
@@ -290,7 +286,88 @@
             .menu-item:nth-child(8) {
                 animation-delay: 0.8s;
             }
+
+        .hamburger-menu {
+            position: fixed;
+            top: 35px;
+            right: 35px;
+            z-index: 1000;
+        }
+
+            .hamburger-menu .nav-menu {
+                display: none;
+                position: absolute;
+                top: 40px;
+                right: 0; 
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                width: max-content; 
+            }
+
+            .hamburger-menu input[type="checkbox"] {
+                display: none;
+            }
+
+                .hamburger-menu input[type="checkbox"]:checked ~ .nav-menu {
+                    display: block;
+                }
+
+        .hamburger-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: #e21b1b;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.8); 
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 8px 15px;
+            color: #333;
+            text-decoration: none;
+            text-align: left; 
+        }
+
+            .nav-menu a:hover {
+                background-color: #f8f9fa;
+                color: #C2102B;
+            }
+
+        .content-section {
+            padding: 50px 0;
+            background-color: #f8f9fa;
+        }
+
+            .content-section h2 {
+                text-align: center;
+                margin-bottom: 40px;
+                color: #333;
+            }
+
+        .menu-item {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .menu-item img {
+                width: 100%;
+                max-width: 300px;
+                border-radius: 10px;
+            }
+
+            .menu-item h4 {
+                margin-top: 15px;
+                color: #333;
+            }
+
+            .menu-item p {
+                color: #777;
+            }
     </style>
+
+
 </head>
 <body>
     <div class="header">
@@ -298,9 +375,15 @@
             <h1>HOLA, @ViewBag.nombre!</h1>
             <div class="welcome-text">Bienvenido a Foodie</div>
         </div>
-        <button class="menu-toggle">
-            <i class="fa-solid fa-bars"></i>
-        </button>
+        <div class="hamburger-menu">
+            <label class="hamburger-icon" for="menu-toggle"><i class="fas fa-bars"></i></label>
+            <input type="checkbox" id="menu-toggle" />
+            <div class="nav-menu">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="text-dark">Inicio</a>
+                <a asp-area="" asp-controller="Orden" asp-action="Index" class="text-dark">Mi Orden</a>
+                <a asp-controller="Home" asp-action="Exit" class="text-dark">Cerrar Sesion</a>
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -377,33 +460,22 @@
             </div>
         </div>
     </div>
+   
 
     <div class="footer">
         © 2025 Foodie - La mejor comida, cuando quieras, donde quieras.
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggleBtn = document.querySelector('.menu-toggle');
-
-            menuToggleBtn.addEventListener('click', function() {
-                this.classList.add('active');
-                setTimeout(() => {
-                    this.classList.remove('active');
-                }, 300);
-
-                alert('¡Menú en desarrollo!');
-            });
-
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-        });
-    </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

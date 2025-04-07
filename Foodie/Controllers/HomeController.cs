@@ -62,6 +62,12 @@ public class HomeController : Controller
     {
         return View();
     }
+
+    public IActionResult Exit()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Autenticar", "Login_Clientes");
+    }
    
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
