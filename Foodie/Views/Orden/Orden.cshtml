@@ -1,0 +1,119 @@
+﻿@model List<Foodie.Models.OrdenViewModel>
+
+@{
+    ViewData["Title"] = "Mis Órdenes";
+}
+<div>
+<style>
+    .orden-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .orden-header {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #e0e0e0;
+        border-radius: 15px 15px 0 0;
+    }
+
+    .orden-img {
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .emoji-btn {
+        font-size: 1.8rem;
+        background-color: transparent;
+        border: none;
+        transition: transform 0.2s;
+    }
+
+        .emoji-btn:hover {
+            transform: scale(1.2);
+        }
+
+    .precio {
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .calificacion-seccion {
+        text-align: center;
+        margin-top: 1rem;
+    }
+</style>
+
+<div class="container my-5">
+    <h2 class="mb-4">🧾 Detalles de tus órdenes</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No tienes órdenes registradas.</div>
+    }
+    else
+    {
+        foreach (var orden in Model)
+        {
+            <div class="card orden-card mb-5">
+                <div class="card-header orden-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0">Recibo: <strong>@orden.NumRecibo</strong></h5>
+                        <small class="text-muted">Fecha: @orden.FechaPedido.ToString("dd/MM/yyyy HH:mm")</small>
+                    </div>
+                    <span class="badge bg-success">@orden.Estado</span>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        @foreach (var item in orden.Items)
+                        {
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-start gap-3 border p-2 rounded">
+                                    <img src="@item.ImagenUrl" alt="@item.Nombre" class="orden-img" />
+                                    <div>
+                                        <h6>@item.Nombre</h6>
+                                        <p class="mb-1">@item.Descripcion</p>
+                                        <p class="mb-1">Cantidad: @item.Cantidad</p>
+                                        <p class="precio">Precio: $@item.Precio.ToString("0.00")</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <hr />
+                    <div class="d-flex justify-content-end">
+                        <h5>
+                            Total del pedido: <span class="text-success">
+                                @(orden.Total.HasValue ? "$" + orden.Total.Value.ToString("0.00") : "Sin total")
+                            </span>
+                        </h5>
+                    </div>
+
+                    <div class="calificacion-seccion mt-4">
+                        <h6>¿Cómo calificarías tu experiencia?</h6>
+                        <form method="post" asp-action="CalificarExperiencia" asp-controller="Orden">
+                            <input type="hidden" name="idPedido" value="@orden.IdPedido" />
+                            <div class="d-flex justify-content-center gap-3 mt-2">
+                                <button name="rating" value="1" class="emoji-btn" title="Muy mala">😠</button>
+                                <button name="rating" value="2" class="emoji-btn" title="Regular">😐</button>
+                                <button name="rating" value="3" class="emoji-btn" title="Buena">🙂</button>
+                                <button name="rating" value="4" class="emoji-btn" title="Excelente">😍</button>
+                            </div>
+                        </form>
+
+                        @if (TempData["RatingMessage"] != null)
+                        {
+                            <div class="alert alert-success mt-3">
+                                @TempData["RatingMessage"]
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+</div>
