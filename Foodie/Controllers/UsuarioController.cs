@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Foodie.Models;
+using ProyectoVentas.Models.Dtos;
 
 namespace Foodie.Controllers
 {
@@ -15,18 +16,25 @@ namespace Foodie.Controllers
 
         public IActionResult Perfil()
         {
-            var cliente = _context.Cliente.FirstOrDefault(c => c.clienteId == 1);
+            var loginid = HttpContext.Session.GetInt32("loginid");
+
+            if (loginid == null)
+            {
+                return RedirectToAction("Autenticar", "Login_Clientes");
+            }
+
+            var cliente = _context.Cliente.FirstOrDefault(c => c.login_Cliente.loginid == loginid);
 
             if (cliente == null)
             {
-                RedirectToAction("Index", "Home");
+                return RedirectToAction("Autenticar", "Login_Clientes");
             }
 
             var login_cliente = _context.Login_Cliente.FirstOrDefault(lc => lc.loginid == cliente.loginid);
 
             if (login_cliente == null)
             {
-                RedirectToAction("Index", "Home");
+                return RedirectToAction("Autenticar", "Login_Clientes");
             }
 
             ClienteViewModel clienteDto = new ClienteViewModel
@@ -38,24 +46,36 @@ namespace Foodie.Controllers
             return View(clienteDto);
         }
 
-        public IActionResult EditarDatosPersonales(int clienteId)
+        public IActionResult EditarDatosPersonales()
         {
-            var cliente = _context.Cliente.FirstOrDefault(c => c.clienteId == clienteId);
+            var loginid = HttpContext.Session.GetInt32("loginid");
+
+            if (loginid == null)
+            {
+                return RedirectToAction("Autenticar", "Login_Clientes");
+            }
+            var cliente = _context.Cliente.FirstOrDefault(c => c.login_Cliente.loginid == loginid);
             if (cliente == null)
             {
-                RedirectToAction("Index", "Home");
+                return RedirectToAction("Autenticar", "Login_Clientes");
             }
 
             return View(cliente);
         }
 
         [HttpPost]
-        public IActionResult EditarDatosPersonales(int clienteId, string nombre, string telefono, string direccion)
+        public IActionResult EditarDatosPersonales(string nombre, string telefono, string direccion)
         {
-            var cliente = _context.Cliente.FirstOrDefault(c => c.clienteId == clienteId);
+            var loginid = HttpContext.Session.GetInt32("loginid");
+
+            if (loginid == null)
+            {
+                return RedirectToAction("Autenticar", "Login_Clientes");
+            }
+            var cliente = _context.Cliente.FirstOrDefault(c => c.login_Cliente.loginid == loginid);
             if (cliente == null)
             {
-                RedirectToAction("Index", "Home");
+                return RedirectToAction("Autenticar", "Login_Clientes");
             }
 
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(telefono) || string.IsNullOrEmpty(direccion))
@@ -74,12 +94,19 @@ namespace Foodie.Controllers
             return RedirectToAction("Perfil");
         }
 
-        public IActionResult EditarInicioSesion(int loginId)
+        public IActionResult EditarInicioSesion()
         {
-            var login_cliente = _context.Login_Cliente.FirstOrDefault(lc => lc.loginid == loginId);
+            var loginid = HttpContext.Session.GetInt32("loginid");
+
+            if (loginid == null)
+            {
+                return RedirectToAction("Autenticar", "Login_Clientes");
+            }
+
+            var login_cliente = _context.Login_Cliente.FirstOrDefault(lc => lc.loginid == loginid);
             if (login_cliente == null)
             {
-                RedirectToAction("Index", "Home");
+                return RedirectToAction("Autenticar", "Login_Clientes");
             }
 
             EditarInicioSesionViewModel editarInicioSesionDto = new EditarInicioSesionViewModel
@@ -94,11 +121,14 @@ namespace Foodie.Controllers
         [HttpPost]
         public IActionResult EditarInicioSesion(EditarInicioSesionViewModel model)
         {
-            var login_cliente = _context.Login_Cliente.FirstOrDefault(lc => lc.loginid == model.loginId);
-            if (login_cliente == null)
+            var loginid = HttpContext.Session.GetInt32("loginid");
+
+            if (loginid == null)
             {
-                RedirectToAction("Index", "Home");
+                return RedirectToAction("Autenticar", "Login_Clientes");
             }
+
+            var login_cliente = _context.Login_Cliente.FirstOrDefault(lc => lc.loginid == loginid);
 
             if (string.IsNullOrEmpty(model.correo) || string.IsNullOrEmpty(model.contrasenaActual) || string.IsNullOrEmpty(model.contrasenaNueva) || string.IsNullOrEmpty(model.contrasenaNuevaConfirmacion))
             {
