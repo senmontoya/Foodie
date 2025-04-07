@@ -380,8 +380,10 @@
             <input type="checkbox" id="menu-toggle" />
             <div class="nav-menu">
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="text-dark">Inicio</a>
+                <a asp-controller="Usuario" asp-action="Perfil" class="text-dark">Perfil</a>
                 <a asp-area="" asp-controller="Orden" asp-action="Index" class="text-dark">Mi Orden</a>
                 <a asp-controller="Home" asp-action="Exit" class="text-dark">Cerrar Sesion</a>
+                <a asp-controller="Orden" asp-action="ConfirmarPedido" class="text-dark">Pedido Actual</a>
             </div>
         </div>
     </div>

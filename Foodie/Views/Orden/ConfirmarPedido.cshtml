@@ -1,5 +1,4 @@
-﻿@* @model ProyectoVentas.Models.ViewModels.ConfirmarPedidoViewModel *@
-@model Foodie.Models.ViewModels.ConfirmarPedidoViewModel
+﻿@model Foodie.Models.ViewModels.ConfirmarPedidoViewModel
 
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4 shadow-sm w-75">
@@ -10,6 +9,10 @@
             <div class="col-md-6">
                 <div class="m-2">
                     <h5>Detalles del Pedido:</h5>
+                    @if(Model.Items.Count == 0)
+                    {
+                        <p><strong>No hay productos en el pedido.</strong></p>
+                    }
                     @foreach (var item in Model.Items)
                     {
                         <div class="form-control d-flex border-danger p-1">
@@ -65,7 +68,7 @@
                     </div>
                 </div>
 
-                <form asp-action="ConfirmarPedido" method="post">
+                <form asp-action="ConfirmarPedidoPost" method="post">
                     <div class="d-flex justify-content-between">
                         <a  asp-action="LimpiarPedido" class="btn px-4" style="background-color: #f5143d; color: white; border-radius: 6px;">
                             CANCELAR PEDIDO
