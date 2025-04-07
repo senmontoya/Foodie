@@ -250,6 +250,24 @@
             background-color: #c1002b;
         }
 
+    .btn-agregar-pedido {
+        display: inline-block;
+        padding: 10px 18px;
+        background-color: #ff7043;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+    }
+
+        .btn-agregar-pedido:hover {
+            background-color: #f4511e;
+        }
+
+
 </style>
 
 
@@ -318,9 +336,9 @@
                                                         <h3 class="product-name">${combo.nombre}</h3>
                                                         <p class="product-description">${combo.descripcion}</p>
                                                             <p class="product-options">$${combo.precio.toFixed(2)}</p>
-                                                         <button class="add-to-cart-btn" onclick="location.href='/Carrito/Agregar?productoId=${combo.id}'">
-                                                            🛒 Agregar al carrito
-                                                        </button>
+                                                            <a href="/Orden/AgregarAlPedido?itemId=${p.id}" class="btn-agregar-pedido">
+                                                                🧾 Agregar al Pedido
+                                                            </a>
                                                     </div>
                                                 </div>`;
                                 contenedor.innerHTML += card;
@@ -335,9 +353,9 @@
                                                     <h3 class="product-name">${p.nombre}</h3>
                                                     <p class="product-description">${p.descripcion}</p>
                                                     <p class="product-options">$${p.precio.toFixed(2)}</p>
-                                                    <button class="add-to-cart-btn" onclick="location.href='/Carrito/Agregar?productoId=${p.id}'">
-                                                        🛒 Agregar al carrito
-                                                    </button>
+                                                    <a href="/Orden/AgregarAlPedido?itemId=${p.id}" class="btn-agregar-pedido">
+                                                        🧾 Agregar al Pedido
+                                                    </a>
                                                 </div>
                                             </div>`;
                             contenedor.innerHTML += card;
