@@ -239,7 +239,6 @@
 
         }
 
-        /* Animation for menu items */
         @@keyframes fadeIn {
             from
 
@@ -384,22 +383,18 @@
     </div>
 
     <script>
-        // Simple JavaScript to enhance interactions
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggleBtn = document.querySelector('.menu-toggle');
 
             menuToggleBtn.addEventListener('click', function() {
-                // Simple effect when menu button is clicked
                 this.classList.add('active');
                 setTimeout(() => {
                     this.classList.remove('active');
                 }, 300);
 
-                // This would normally toggle a menu, but we'll just add an effect
                 alert('¡Menú en desarrollo!');
             });
 
-            // Add smooth scrolling behavior
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
