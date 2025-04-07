@@ -16,7 +16,7 @@ public class HomeController : Controller
     }
 
     [Autenticacion]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         var loginid = HttpContext.Session.GetInt32("loginid");
         var correo = HttpContext.Session.GetString("correo");
@@ -41,15 +41,34 @@ public class HomeController : Controller
             ViewBag.ClienteId = 0;
         }
 
-        ViewBag.correo = correo;
-        return View();  
+        var platos = foodieContext_.Platos
+            .Where(p => p.estado == 1)
+            .ToList();
+
+        if (platos != null)
+        {
+            ViewBag.platosImagenes = platos.Select(p => p.imagen).ToList();
+        }
+        else
+        {
+            ViewBag.platos = null;
+        }
+
+        return View();
     }
+
     [Autenticacion]
     public IActionResult Privacy()
     {
         return View();
     }
-   
+
+    public IActionResult Exit()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Autenticar", "Login_Clientes");
+    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
