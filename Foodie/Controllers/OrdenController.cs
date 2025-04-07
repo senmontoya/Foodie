@@ -3,7 +3,6 @@ using Foodie.Models;
 using Foodie.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Foodie.Models;
 using System.Globalization;
 
 namespace ProyectoVentas.Controllers
@@ -96,36 +95,41 @@ namespace ProyectoVentas.Controllers
 
         public IActionResult AgregarAlPedido(int productoId)
         {
-            var producto = _context.Plato.FirstOrDefault(p => p.id == productoId);
-
-            if (producto == null)
-            {
-                producto = _context.Combo.FirstOrDefault(p => p.id == productoId);
-
-                if(producto == null)
-                {
-                    return RedirectToAction("Welcome", "Welcome");
-                }
-            }
-
             var carrito = HttpContext.Session.GetObjectFromJson<List<ItemPedido>>("Carrito") ?? new List<ItemPedido>();
 
-            var item = carrito.FirstOrDefault(i => i.ProductoId == producto.id);
+            var plato = _context.Platos.FirstOrDefault(p => p.id == productoId);
 
-            if (item != null)
-            {
-                item.Cantidad++;
-            }
-            else
+            if (plato != null)
             {
                 carrito.Add(new ItemPedido
                 {
-                    ProductoId = producto.id,
-                    Nombre = producto.Nombre,
-                    Descripcion = producto.Descripcion,
-                    Precio = producto.Precio,
+                    ProductoId = plato.id,
+                    Nombre = plato.nombre,
+                    Descripcion = plato.descripcion,
+                    Precio = plato.precio,
                     Cantidad = 1
                 });
+            }
+            else
+            {
+                var combo = _context.combos.FirstOrDefault(c => c.id == productoId);
+                if (combo != null)
+                {
+                    carrito.Add(new ItemPedido
+                    {
+                        ProductoId = combo.id,
+                        Nombre = combo.nombre,
+                        Descripcion = combo.descripcion,
+                        Precio = combo.precio,
+                        Cantidad = 1
+                    });
+                }
+                else
+                {
+                    return RedirectToAction("Welcome", "Welcome");
+
+
+                }
             }
 
             HttpContext.Session.SetObjectAsJson("Carrito", carrito);
@@ -136,10 +140,10 @@ namespace ProyectoVentas.Controllers
         public IActionResult LimpiarPedido()
         {
             HttpContext.Session.Remove("Carrito");
-            return RedirectToAction("VerCarrito");
+            return RedirectToAction("Welcome", "Welcome");
         }
 
-        [HttpGet]
+        
         public IActionResult ConfirmarPedido()
         {
 
@@ -163,7 +167,7 @@ namespace ProyectoVentas.Controllers
                 return RedirectToAction("Autenticar", "Login_Clientes");
             }
 
-            var loginCliente = _context.Login_CLiente.FirstOrDefault(lc => lc.loginid == loginid);
+            var loginCliente = _context.Login_Cliente.FirstOrDefault(lc => lc.loginid == loginid);
 
             var viewModel = new ConfirmarPedidoViewModel
             {
