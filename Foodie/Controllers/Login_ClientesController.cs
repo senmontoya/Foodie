@@ -84,7 +84,7 @@ namespace Foodie.Controllers
                 direccion = direccion,
                 latitud = 13.123456M,
                 longitud = -89.123456M,
-                loginid = nuevoLogin.loginid // Usamos el loginid generado
+                loginid = nuevoLogin.loginid 
             };
             foodieContext_.Cliente.Add(nuevoCliente);
             await foodieContext_.SaveChangesAsync();

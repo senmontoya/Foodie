@@ -1,0 +1,193 @@
+﻿@model List<Foodie.Models.Historial_Pedido>
+@{
+    ViewData["Title"] = "Historial de Pedidos";
+    Layout = null; // Deshabilitamos el layout para incluir el header directamente
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Foodie</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e21b1b;
+            --dark: #1D1D1D;
+            --light: #ffffff;
+            --gray: #f8f8f8;
+            --shadow: 0 10px 20px rgba(0,0,0,0.08);
+            --hover-shadow: 0 15px 30px rgba(226, 27, 27, 0.15);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--gray);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background-color: var(--light);
+            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--dark);
+            letter-spacing: -0.5px;
+        }
+
+        .hamburger-menu {
+            position: relative;
+        }
+
+            .hamburger-menu .nav-menu {
+                display: none;
+                position: absolute;
+                top: 40px;
+                right: 0;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                width: max-content;
+            }
+
+            .hamburger-menu input[type="checkbox"] {
+                display: none;
+            }
+
+                .hamburger-menu input[type="checkbox"]:checked ~ .nav-menu {
+                    display: block;
+                }
+
+        .hamburger-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color: #e21b1b;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 8px 15px;
+            color: #333;
+            text-decoration: none;
+            text-align: left;
+        }
+
+            .nav-menu a:hover {
+                background-color: #f8f9fa;
+                color: #C2102B;
+            }
+
+        .welcome-text {
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <!-- Copiamos el header de Index.cshtml -->
+    <div class="header">
+        <div class="header-content">
+            <h1>HOLA, @ViewBag.Nombre!</h1>
+            <div class="welcome-text">Bienvenido a Foodie</div>  
+               </div>
+        <div class="hamburger-menu">
+            <label class="hamburger-icon" for="menu-toggle"><i class="fas fa-bars"></i></label>
+            <input type="checkbox" id="menu-toggle" />
+            <div class="nav-menu">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="text-dark">Inicio</a>
+                <a asp-area="" asp-controller="Orden" asp-action="Index" class="text-dark">Mi Orden</a>
+                <a asp-controller="Orden" asp-action="Historial" class="text-dark">Historial</a>
+                <a asp-controller="Home" asp-action="Exit" class="text-dark">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Historial de Pedidos</h2>
+
+        @if (Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Plato</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pedido in Model)
+                        {
+                            <tr>
+                                <td>@(pedido.Plato?.nombre ?? "N/A")</td>
+                                <td>@pedido.cantidad</td>
+                                <td>@(pedido.total?.ToString("C") ?? "-")</td>
+                                <td>
+                                    @if (pedido.estado == "Pendiente")
+                                    {
+                                        <span class="badge bg-warning text-dark">Pendiente</span>
+                                    }
+                                    else if (pedido.estado == "Cancelado")
+                                    {
+                                        <span class="badge bg-danger">Cancelado</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-info">@pedido.estado</span>
+                                    }
+                                </td>
+                                <td>@(pedido.fecha_venta.HasValue ? pedido.fecha_venta.Value.ToString("dd/MM/yyyy HH:mm") : "-")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info text-center">
+                <p>No tienes pedidos en tu historial.</p>
+            </div>
+        }
+        <div class="text-center mt-4">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Volver al Inicio</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
