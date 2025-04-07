@@ -7,7 +7,9 @@ namespace ProyectoVentas.Controllers
 {
     public class MenuController : Controller
     {
-        public IActionResult Index()
+       
+
+        public IActionResult menu()
         {
             return View();
         }
@@ -27,7 +29,7 @@ namespace ProyectoVentas.Controllers
                 {
                     nombre = c.nombre,
                     descripcion = c.descripcion,
-                    precio = c.precio,
+                    precio = c.precio
                     //imagen = c.imagen ?? "~/img/combo.png"
                 })
                 .ToList();

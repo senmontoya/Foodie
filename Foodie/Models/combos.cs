@@ -13,6 +13,6 @@ namespace Foodie.Models
         public int? categoria_id { get; set; }
         public int estado { get; set; }
 
-        public string? imagen { get; set; }
+        
     }
 }
