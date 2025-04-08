@@ -281,7 +281,7 @@
             </button>
             <div class="title-content">
                 <h1 class="main-title">Menu</h1>
-                <p class="subtitle">Dulce Sabor</p>
+                <p class="subtitle">Foodie</p>
             </div>
         </div>
         <img src="~/img/logo.png" alt="Logo" class="logo">
@@ -336,7 +336,7 @@
                                                         <h3 class="product-name">${combo.nombre}</h3>
                                                         <p class="product-description">${combo.descripcion}</p>
                                                             <p class="product-options">$${combo.precio.toFixed(2)}</p>
-                                                            <a href="/Orden/AgregarAlPedido?itemId=${combo.id}" class="btn-agregar-pedido">
+                                                            <a href="/Orden/AgregarAlPedido?productoId=${combo.id}" class="btn-agregar-pedido">
                                                                 🧾 Agregar al Pedido
                                                             </a>
                                                     </div>
@@ -353,9 +353,10 @@
                                                     <h3 class="product-name">${p.nombre}</h3>
                                                     <p class="product-description">${p.descripcion}</p>
                                                     <p class="product-options">$${p.precio.toFixed(2)}</p>
-                                                    <a href="/Orden/AgregarAlPedido?itemId=${p.id}" class="btn-agregar-pedido">
+                                                    <a href="/Orden/AgregarAlPedido?productoId=${p.id}" class="btn-agregar-pedido">
                                                         🧾 Agregar al Pedido
                                                     </a>
+
                                                 </div>
                                             </div>`;
                             contenedor.innerHTML += card;
