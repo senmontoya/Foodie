@@ -226,36 +226,31 @@
     <div class="container">
         <h2><strong class="recomment">Foodie Recomienda</strong></h2>
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img class="card-img-top" src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=1376&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Pizza">
-                    <span class="hot-badge">Popular</span>
-                    <div class="card-body">
-                        <h4>Pizza 4 quesos</h4>
-                        <p class="card-text">Pizza jugosa, fresca con tomate y nuestra salsa especial.</p>
+            @if (ViewBag.platosImagenes != null)
+            {
+                var imagenes = ViewBag.platosImagenes as List<string>;
+                var descripciones = ViewBag.descripcion as List<string>;
+                var nombres = ViewBag.nombre as List<string>;
+
+                for (int i = 0; i < imagenes.Count; i++)
+                {
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img class="card-img-top" src="@imagenes[i]" alt="Plato recomendado">
+                            <span class="new-badge">New</span>
+                            <div class="card-body">
+                                <h4>@nombres[i]</h4>
+                                <p class="card-text">@descripciones[i]</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img class="card-img-top" src="https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Papas Fritas">
-                    <span class="new-badge">New</span>
-                    <div class="card-body">
-                        <h4>Hamburguesa con Papas</h4>
-                        <p class="card-text">Perfectamente doradas y sazonadas, el acompañamiento ideal.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img class="card-img-top" src="https://images.unsplash.com/photo-1618183536229-264272f21ff8?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Coca-Cola">
-                    <span class="new-badge">New</span>
-                    <div class="card-body">
-                        <h4>Refresco Grande</h4>
-                        <p class="card-text">Elige tu sabor favorito para refrescar tu comida.</p>
-                    </div>
-                </div>
-            </div>
+                }
+            }
+            else
+            {
+                <p>No hay platos disponibles en este momento.</p>
+            }
+
         </div>
     </div>
 </section>

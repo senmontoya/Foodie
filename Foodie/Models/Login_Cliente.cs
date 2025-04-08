@@ -6,7 +6,6 @@ namespace Foodie.Models
     public class Login_Cliente
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int loginid { get; set; }
 
         [Required] 

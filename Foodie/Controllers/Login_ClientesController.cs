@@ -49,6 +49,7 @@ namespace Foodie.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Registrarse(string correo, string contraseña, string nombre, string telefono, string direccion)
         {

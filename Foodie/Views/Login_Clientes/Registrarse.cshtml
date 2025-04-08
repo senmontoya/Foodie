@@ -31,7 +31,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            position: relative; /* Para posicionar elementos dentro */
+            position: relative;
         }
 
         .image-section {
@@ -46,7 +46,7 @@
             position: absolute;
             right: 20px;
             top: 20px;
-            z-index: 1; 
+            z-index: 1;
         }
 
         h1 {
@@ -123,7 +123,11 @@
                         <label for="Direccion">Dirección:</label>
                         <input type="text" name="direccion" class="form-control" required />
                     </div>
-                    <button type="submit" class="btn btn-primary">Registrarse</button>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button type="submit" class="btn btn-primary">Registrarse</button>
+                        <a href="/Login_Clientes/Autenticar" class="ms-3">¿Ya tienes cuenta? Inicia sesión</a>
+                    </div>
                 </form>
 
                 <div class="message-container">
@@ -138,9 +142,9 @@
                         <div class="alert alert-success">
                             @ViewData["SuccessMessage"]
                         </div>
-                     
+
                         <script>
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 window.location.href = '@Url.Action("Autenticar", "Login_Clientes")';
                             }, 2000);
                         </script>
