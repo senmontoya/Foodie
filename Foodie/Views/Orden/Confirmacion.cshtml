@@ -1,7 +1,8 @@
-﻿@model List<Foodie.Models.Historial_Pedido>
+﻿@model List<Foodie.Models.Detalle_Pedido_Online>
 @{
-    ViewData["Title"] = "Historial de Pedidos";
-    Layout = null; // No layout, as per your example
+    ViewData["Title"] = "Confirmación de Pedido";
+    Layout = null;
+    var pedido = ViewBag.Pedido as Foodie.Models.Pedido_Online;
 }
 
 <!DOCTYPE html>
@@ -115,82 +116,57 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <h1>HOLA, @ViewBag.Nombre!</h1>
+            <h1>Confirmacion de pedido</h1>
             <div class="welcome-text">Bienvenido a Foodie</div>
         </div>
         <div class="hamburger-menu">
             <label class="hamburger-icon" for="menu-toggle"><i class="fas fa-bars"></i></label>
             <input type="checkbox" id="menu-toggle" />
             <div class="nav-menu">
-                <a asp-controller="Home" asp-action="Index" class="text-dark">Inicio</a>
-                <a asp-controller="Orden" asp-action="Index" class="text-dark">Mi Orden</a>
-                <a asp-controller="Orden" asp-action="Historial" class="text-dark">Historial</a>
-                <a asp-controller="Home" asp-action="Exit" class="text-dark">Cerrar Sesión</a>
+                <a asp-controller="Home" asp-action="Index">Inicio</a>
+                <a asp-controller="Orden" asp-action="Index">Mi Orden</a>
+                <a asp-controller="Orden" asp-action="Historial">Historial</a>
+                <a asp-controller="Home" asp-action="Exit">Cerrar Sesión</a>
             </div>
         </div>
     </div>
 
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Historial de Pedidos</h2>
+        <h2 class="text-center mb-4">¡Pedido Confirmado!</h2>
+        <div class="alert alert-success text-center">
+            <p>Tu pedido #@pedido.id_pedido ha sido registrado exitosamente.</p>
+            <p>Fecha: @pedido.fechaApertura?.ToString("dd/MM/yyyy HH:mm")</p>
+        </div>
 
-        @if (Model.Any())
-        {
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Plato</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detalle in Model)
+                    {
                         <tr>
-                            <th>Item</th>
-                            <th>Cantidad</th>
-                            <th>Total</th>
-                            <th>Estado</th>
-                            <th>Fecha</th>
+                            <td>@detalle.Plato.nombre</td>
+                            <td>@detalle.cantidad</td>
+                            <td>@detalle.subtotal.ToString("C")</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var pedido in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @if (pedido.tipo_item == "Plato" && pedido.Plato != null)
-                                    {
-                                        @pedido.Plato.nombre
-                                    }
-                                    else
-                                    {
-                                        @:N/A
-                                    }
-                                </td>
-                                <td>@pedido.cantidad</td>
-                                <td>@(pedido.Total?.ToString("C") ?? "-")</td>
-                                <td>
-                                    @if (pedido.estado == "Pendiente")
-                                    {
-                                        <span class="badge bg-warning text-dark">Pendiente</span>
-                                    }
-                                    else if (pedido.estado == "Cancelado")
-                                    {
-                                        <span class="badge bg-danger">Cancelado</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-info">@pedido.estado</span>
-                                    }
-                                </td>
-                                <td>@(pedido.fecha_venta.HasValue ? pedido.fecha_venta.Value.ToString("dd/MM/yyyy HH:mm") : "-")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
-        else
-        {
-            <div class="alert alert-info text-center">
-                <p>No tienes pedidos en tu historial.</p>
-            </div>
-        }
+                    }
+                    <tr>
+                        <td colspan="2" class="text-end fw-bold">Total:</td>
+                        <td class="fw-bold">@Model.Sum(d => d.subtotal).ToString("C")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
         <div class="text-center mt-4">
-            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Volver al Inicio</a>
+            <a asp-controller="Orden" asp-action="Historial" class="btn btn-primary">Ver Historial</a>
+            <a asp-controller="Orden" asp-action="Index" class="btn btn-success">Hacer Otro Pedido</a>
         </div>
     </div>
 

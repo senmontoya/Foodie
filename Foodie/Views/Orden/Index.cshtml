@@ -1,7 +1,7 @@
-﻿@model List<Foodie.Models.Historial_Pedido>
+﻿@model List<Foodie.Models.Platos>
 @{
-    ViewData["Title"] = "Historial de Pedidos";
-    Layout = null; // No layout, as per your example
+    ViewData["Title"] = "Crear Pedido";
+    Layout = null;
 }
 
 <!DOCTYPE html>
@@ -115,82 +115,58 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <h1>HOLA, @ViewBag.Nombre!</h1>
+            <h1>Menu</h1>
             <div class="welcome-text">Bienvenido a Foodie</div>
         </div>
         <div class="hamburger-menu">
             <label class="hamburger-icon" for="menu-toggle"><i class="fas fa-bars"></i></label>
             <input type="checkbox" id="menu-toggle" />
             <div class="nav-menu">
-                <a asp-controller="Home" asp-action="Index" class="text-dark">Inicio</a>
-                <a asp-controller="Orden" asp-action="Index" class="text-dark">Mi Orden</a>
-                <a asp-controller="Orden" asp-action="Historial" class="text-dark">Historial</a>
-                <a asp-controller="Home" asp-action="Exit" class="text-dark">Cerrar Sesión</a>
+                <a asp-controller="Home" asp-action="Index">Inicio</a>
+                <a asp-controller="Orden" asp-action="Index">Mi Orden</a>
+                <a asp-controller="Orden" asp-action="Historial">Historial</a>
+                <a asp-controller="Home" asp-action="Exit">Cerrar Sesión</a>
             </div>
         </div>
     </div>
 
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Historial de Pedidos</h2>
+        <h2 class="text-center mb-4">Selecciona tus Platos</h2>
 
-        @if (Model.Any())
+        @if (TempData["Mensaje"] != null)
         {
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Cantidad</th>
-                            <th>Total</th>
-                            <th>Estado</th>
-                            <th>Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var pedido in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @if (pedido.tipo_item == "Plato" && pedido.Plato != null)
-                                    {
-                                        @pedido.Plato.nombre
-                                    }
-                                    else
-                                    {
-                                        @:N/A
-                                    }
-                                </td>
-                                <td>@pedido.cantidad</td>
-                                <td>@(pedido.Total?.ToString("C") ?? "-")</td>
-                                <td>
-                                    @if (pedido.estado == "Pendiente")
-                                    {
-                                        <span class="badge bg-warning text-dark">Pendiente</span>
-                                    }
-                                    else if (pedido.estado == "Cancelado")
-                                    {
-                                        <span class="badge bg-danger">Cancelado</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-info">@pedido.estado</span>
-                                    }
-                                </td>
-                                <td>@(pedido.fecha_venta.HasValue ? pedido.fecha_venta.Value.ToString("dd/MM/yyyy HH:mm") : "-")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+            <div class="alert alert-success">@TempData["Mensaje"]</div>
         }
-        else
+        @if (TempData["Error"] != null)
         {
-            <div class="alert alert-info text-center">
-                <p>No tienes pedidos en tu historial.</p>
-            </div>
+            <div class="alert alert-danger">@TempData["Error"]</div>
         }
+
+        <div class="row">
+            @foreach (var plato in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="@plato.imagen" class="card-img-top" alt="@plato.nombre" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">@plato.nombre</h5>
+                            <p class="card-text">@plato.descripcion</p>
+                            <p class="card-text fw-bold">@string.Format("{0:C}", plato.precio)</p>
+                            <form asp-action="AgregarAlCarrito" method="post">
+                                <input type="hidden" name="platoId" value="@plato.id" />
+                                <div class="input-group">
+                                    <input type="number" name="cantidad" class="form-control" min="1" value="1" style="max-width: 80px;" />
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-cart-plus"></i> Agregar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
         <div class="text-center mt-4">
-            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Volver al Inicio</a>
+            <a asp-action="VerCarrito" class="btn btn-success">Ver Carrito</a>
         </div>
     </div>
 

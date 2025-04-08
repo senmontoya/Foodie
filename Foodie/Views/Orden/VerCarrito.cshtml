@@ -1,7 +1,7 @@
-﻿@model List<Foodie.Models.Historial_Pedido>
+﻿@model List<Foodie.Models.CarritoItem>
 @{
-    ViewData["Title"] = "Historial de Pedidos";
-    Layout = null; // No layout, as per your example
+    ViewData["Title"] = "Mi Carrito";
+    Layout = null;
 }
 
 <!DOCTYPE html>
@@ -115,23 +115,28 @@
 <body>
     <div class="header">
         <div class="header-content">
-            <h1>HOLA, @ViewBag.Nombre!</h1>
+            <h1>Ver carrito</h1>
             <div class="welcome-text">Bienvenido a Foodie</div>
         </div>
         <div class="hamburger-menu">
             <label class="hamburger-icon" for="menu-toggle"><i class="fas fa-bars"></i></label>
             <input type="checkbox" id="menu-toggle" />
             <div class="nav-menu">
-                <a asp-controller="Home" asp-action="Index" class="text-dark">Inicio</a>
-                <a asp-controller="Orden" asp-action="Index" class="text-dark">Mi Orden</a>
-                <a asp-controller="Orden" asp-action="Historial" class="text-dark">Historial</a>
-                <a asp-controller="Home" asp-action="Exit" class="text-dark">Cerrar Sesión</a>
+                <a asp-controller="Home" asp-action="Index">Inicio</a>
+                <a asp-controller="Orden" asp-action="Index">Mi Orden</a>
+                <a asp-controller="Orden" asp-action="Historial">Historial</a>
+                <a asp-controller="Home" asp-action="Exit">Cerrar Sesión</a>
             </div>
         </div>
     </div>
 
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Historial de Pedidos</h2>
+        <h2 class="text-center mb-4">Mi Carrito</h2>
+
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="alert alert-success">@TempData["Mensaje"]</div>
+        }
 
         @if (Model.Any())
         {
@@ -139,59 +144,55 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Item</th>
+                            <th>Plato</th>
+                            <th>Precio Unitario</th>
                             <th>Cantidad</th>
-                            <th>Total</th>
-                            <th>Estado</th>
-                            <th>Fecha</th>
+                            <th>Subtotal</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var pedido in Model)
+                        @foreach (var item in Model)
                         {
                             <tr>
+                                <td>@item.Nombre</td>
+                                <td>@item.Precio.ToString("C")</td>
+                                <td>@item.Cantidad</td>
+                                <td>@item.Subtotal.ToString("C")</td>
                                 <td>
-                                    @if (pedido.tipo_item == "Plato" && pedido.Plato != null)
-                                    {
-                                        @pedido.Plato.nombre
-                                    }
-                                    else
-                                    {
-                                        @:N/A
-                                    }
+                                    <form asp-action="EliminarDelCarrito" method="post" class="d-inline">
+                                        <input type="hidden" name="platoId" value="@item.PlatoId" />
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    </form>
                                 </td>
-                                <td>@pedido.cantidad</td>
-                                <td>@(pedido.Total?.ToString("C") ?? "-")</td>
-                                <td>
-                                    @if (pedido.estado == "Pendiente")
-                                    {
-                                        <span class="badge bg-warning text-dark">Pendiente</span>
-                                    }
-                                    else if (pedido.estado == "Cancelado")
-                                    {
-                                        <span class="badge bg-danger">Cancelado</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-info">@pedido.estado</span>
-                                    }
-                                </td>
-                                <td>@(pedido.fecha_venta.HasValue ? pedido.fecha_venta.Value.ToString("dd/MM/yyyy HH:mm") : "-")</td>
                             </tr>
                         }
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold">Total:</td>
+                            <td class="fw-bold">@Model.Sum(i => i.Subtotal).ToString("C")</td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
+            </div>
+            
+            <div class="text-center mt-4">
+                <form asp-action="LimpiarCarrito" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-warning">Vaciar Carrito</button>
+                </form>
+                <a asp-action="Index" class="btn btn-primary">Seguir Comprando</a>
+                <form asp-action="ConfirmarPedido" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-success">Confirmar Pedido</button>
+                </form>
             </div>
         }
         else
         {
             <div class="alert alert-info text-center">
-                <p>No tienes pedidos en tu historial.</p>
+                <p>Tu carrito está vacío.</p>
+                <a asp-action="Index" class="btn btn-primary">Empezar a Comprar</a>
             </div>
         }
-        <div class="text-center mt-4">
-            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Volver al Inicio</a>
-        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
