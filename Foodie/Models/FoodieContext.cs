@@ -14,6 +14,8 @@ namespace Foodie.Models
         public DbSet<Cliente> Cliente { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Platos> Platos { get; set; }
+        public DbSet<Historial_Pedido> Historial_Pedido { get; set; }
+
 
     }
 }

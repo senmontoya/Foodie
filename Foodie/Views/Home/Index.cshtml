@@ -150,7 +150,7 @@
                 box-shadow: var(--hover-shadow);
             }
 
-            .promo-card img {   
+            .promo-card img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
@@ -218,36 +218,30 @@
         }
 
         @@media (min-width: 768px) {
-            .menu-grid
+            .menu-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
 
-        {
-            grid-template-columns: repeat(4, 1fr);
-        }
+            .promo-card {
+                width: 320px;
+                height: 180px;
+            }
 
-        .promo-card {
-            width: 320px;
-            height: 180px;
-        }
-
-        .header {
-            padding: 25px 40px;
-        }
-
+            .header {
+                padding: 25px 40px;
+            }
         }
 
         @@keyframes fadeIn {
-            from
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-        {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .menu-item {
@@ -298,13 +292,13 @@
                 display: none;
                 position: absolute;
                 top: 40px;
-                right: 0; 
+                right: 0;
                 background-color: #fff;
                 border: 1px solid #ddd;
                 border-radius: 5px;
                 padding: 10px;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                width: max-content; 
+                width: max-content;
             }
 
             .hamburger-menu input[type="checkbox"] {
@@ -319,7 +313,7 @@
             font-size: 24px;
             cursor: pointer;
             color: #e21b1b;
-            text-shadow: 0 0 3px rgba(0, 0, 0, 0.8); 
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
         }
 
         .nav-menu a {
@@ -327,7 +321,7 @@
             padding: 8px 15px;
             color: #333;
             text-decoration: none;
-            text-align: left; 
+            text-align: left;
         }
 
             .nav-menu a:hover {
@@ -381,6 +375,7 @@
             <div class="nav-menu">
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="text-dark">Inicio</a>
                 <a asp-area="" asp-controller="Orden" asp-action="Index" class="text-dark">Mi Orden</a>
+                <a asp-area="" asp-controller="Orden" asp-action="Historial" class="text-dark">Mi Historial</a>
                 <a asp-controller="Home" asp-action="Exit" class="text-dark">Cerrar Sesion</a>
             </div>
         </div>
@@ -460,14 +455,13 @@
             </div>
         </div>
     </div>
-   
+
 
     <div class="footer">
         © 2025 Foodie - La mejor comida, cuando quieras, donde quieras.
     </div>
 </body>
 </html>
-
 
 
 

@@ -41,7 +41,7 @@ public class HomeController : Controller
             ViewBag.ClienteId = 0;
         }
 
-        var platos =  foodieContext_.Platos
+        var platos = foodieContext_.Platos
             .Where(p => p.estado == 1)
             .ToList();
 
@@ -54,7 +54,7 @@ public class HomeController : Controller
             ViewBag.platos = null;
         }
 
-        return View();  
+        return View();
     }
 
     [Autenticacion]
@@ -68,7 +68,7 @@ public class HomeController : Controller
         HttpContext.Session.Clear();
         return RedirectToAction("Autenticar", "Login_Clientes");
     }
-   
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
